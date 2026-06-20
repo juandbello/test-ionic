@@ -205,6 +205,9 @@ Generar el archivo IPA desde Xcode.
 * Separación entre modelos, servicios y componentes.
 * Control de versiones con Git.
 * Estructura preparada para futuras integraciones.
+* La aplicación fue configurada para iOS mediante Capacitor.
+* La generación del archivo IPA requiere un entorno macOS con Xcode.
+* Se verificó la compatibilidad mediante la configuración del proyecto.
 
 ## Scripts disponibles
 
