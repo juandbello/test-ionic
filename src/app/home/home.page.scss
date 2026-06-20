@@ -1,27 +1,238 @@
-#container {
-  text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+/* ===== GENERAL ===== */
+ion-content {
+  --background: var(--ion-background-color, #1a1a2e);
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+/* ===== SEARCHBAR ===== */
+.custom-searchbar {
+  padding: 0;
+  margin-bottom: 8px;
+  --box-shadow: none;
+  --border-radius: 8px;
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
+.filter-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --min-height: 44px;
+}
 
-  color: #8c8c8c;
+.filter-select {
+  width: 100%;
+}
 
+/* ===== CARD HEADER ROW (for collapsible & titles) ===== */
+.card-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+}
+
+.card-header-row ion-icon:first-child {
+  font-size: 1.2rem;
+  color: var(--ion-color-primary);
+}
+
+.card-header-row span {
+  flex: 1;
+}
+
+/* ===== ADD TASK CARD ===== */
+.add-task-card {
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.add-task-card ion-card-header {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  transition: background 0.2s;
+}
+
+.add-task-card ion-card-header:hover {
+  background: rgba(var(--ion-color-primary-rgb), 0.04);
+}
+
+.add-task-card ion-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ion-color-primary);
+}
+
+/* ===== CUSTOM INPUT ===== */
+.custom-input {
+  --padding-start: 8px;
+}
+
+/* ===== TASKS SECTION ===== */
+.tasks-section {
+  margin-top: 8px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+
+.section-header h2 {
   margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--ion-text-color, #333);
 }
 
-#container a {
-  text-decoration: none;
+.count-chip {
+  height: 22px;
+  font-size: 0.75rem;
+  --background: var(--ion-color-primary);
+  --color: white;
+  margin-left: auto;
+}
+
+/* ===== TASK ITEMS ===== */
+.task-item {
+  --padding-start: 12px;
+  --padding-end: 8px;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  --min-height: 56px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  --background: var(--ion-card-background, white);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+  transition: all 0.2s ease;
+}
+
+.task-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.task-completed {
+  opacity: 0.65;
+}
+
+.task-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-left: 10px;
+}
+
+.task-title {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.task-title.completed {
+  text-decoration: line-through;
+  color: var(--ion-color-medium, #999);
+}
+
+.task-category {
+  display: flex;
+  align-items: center;
+}
+
+.category-chip {
+  height: 22px;
+  font-size: 0.72rem;
+  --background: rgba(var(--ion-color-primary-rgb), 0.15);
+  --color: var(--ion-color-primary);
+  padding: 0 8px;
+}
+
+.category-chip ion-icon {
+  font-size: 11px;
+  margin-right: 2px;
+}
+
+/* ===== ACTION BUTTONS ===== */
+.action-btn {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  height: 34px;
+  width: 34px;
+}
+
+.delete-btn-icon {
+  --color: var(--ion-color-danger);
+}
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+  text-align: center;
+  color: var(--ion-color-medium, #999);
+}
+
+.empty-icon {
+  font-size: 3.5rem;
+  margin-bottom: 16px;
+  color: var(--ion-color-medium-tint, #666);
+}
+
+.empty-state p {
+  font-size: 1rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ===== CATEGORY MODAL ITEMS ===== */
+ion-list[lines="none"] ion-item.category-item {
+  --background: var(--ion-card-background, white);
+  margin-bottom: 4px;
+  border-radius: 10px;
+  --padding-start: 12px;
+  --padding-top: 4px;
+  --padding-bottom: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+/* ===== MODAL ACTIONS ===== */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--ion-border-color, #2a2a3e);
+}
+
+/* ===== ION-ITEM SLIDING ===== */
+ion-item-sliding {
+  margin-bottom: 6px;
+  border-radius: 10px;
+}
+
+/* ===== ION SELECT MODAL OVERRIDES ===== */
+ion-select::part(icon) {
+  color: var(--ion-color-primary);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (min-width: 768px) {
+  ion-content {
+    --padding-start: 20%;
+    --padding-end: 20%;
+  }
+}
+
+@media (min-width: 1200px) {
+  ion-content {
+    --padding-start: 25%;
+    --padding-end: 25%;
+  }
 }

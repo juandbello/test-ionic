@@ -1,20 +1,158 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Mis tareas</ion-title>
+    <ion-buttons slot="end" *ngIf="showCategories">
+      <ion-button (click)="openCategoryModal()" title="Gestionar categorías">
+        <ion-icon slot="icon-only" name="folder-open-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <!-- Filtros -->
+  <ion-card>
+    <ion-card-content>
+      <ion-searchbar
+        placeholder="Buscar tarea..."
+        [ngModel]="searchText"
+        (ionInput)="onSearchInput($event.detail.value!)"
+        class="custom-searchbar"
+        animated
+      >
+      </ion-searchbar>
+
+      <ion-item lines="none" class="filter-item">
+        <ion-icon slot="start" name="funnel-outline" aria-hidden="true"></ion-icon>
+        <ion-select
+          label="Categoría"
+          interface="action-sheet"
+          [ngModel]="selectedCategory"
+          (ionChange)="onCategoryFilterChange($event.detail.value)"
+          class="filter-select"
+        >
+          <ion-select-option value="">Todas</ion-select-option>
+          <ion-select-option *ngFor="let category of categories$ | async" [value]="category.id">
+            {{ category.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Agregar tarea -->
+  <ion-card class="add-task-card">
+    <ion-card-header (click)="isAddTaskOpen = !isAddTaskOpen" style="cursor: pointer;">
+      <ion-card-title>
+        <div class="card-header-row">
+          <span>Nueva tarea</span>
+          <ion-icon [name]="isAddTaskOpen ? 'chevron-up-outline' : 'chevron-down-outline'" color="medium"></ion-icon>
+        </div>
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content *ngIf="isAddTaskOpen">
+      <ion-item>
+        <ion-input
+          placeholder="¿Qué tienes que hacer?"
+          [(ngModel)]="taskTitle"
+          (keyup.enter)="addTask()"
+          class="custom-input"
+        >
+        </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon slot="start" name="pricetag-outline" aria-hidden="true"></ion-icon>
+        <ion-select
+          label="Categoría"
+          [(ngModel)]="selectedCategoryForTask"
+          interface="action-sheet"
+        >
+          <ion-select-option value="">Sin categoría</ion-select-option>
+          <ion-select-option *ngFor="let category of categories$ | async" [value]="category.id">
+            {{ category.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-button
+        (click)="addTask()"
+        expand="block"
+        class="ion-margin-top"
+        [disabled]="!taskTitle.trim()"
+      >
+        <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+        Agregar tarea
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Tareas -->
+  <div class="tasks-section">
+    <div class="section-header">
+      <ion-icon name="list-outline" color="primary" aria-hidden="true"></ion-icon>
+      <h2>Tareas</h2>
+      <ion-chip class="count-chip" *ngIf="(filteredTasks$ | async)?.length">
+        <ion-label>{{ (filteredTasks$ | async)?.length }}</ion-label>
+      </ion-chip>
+    </div>
+
+    <div *ngIf="(filteredTasks$ | async)?.length === 0" class="empty-state">
+      <ion-icon name="clipboard-outline" class="empty-icon"></ion-icon>
+      <p *ngIf="searchText || selectedCategory">
+        No se encontraron tareas con los filtros actuales.
+      </p>
+      <p *ngIf="!searchText && !selectedCategory">
+        ¡Agrega tu primera tarea arriba!
+      </p>
+    </div>
+
+    <!-- Tareas -->
+    <ion-list lines="none">
+      <ion-item-sliding *ngFor="let task of filteredTasks$ | async; trackBy: trackById">
+        <ion-item [class.task-completed]="task.completed" class="task-item">
+          <ion-checkbox
+            slot="start"
+            [checked]="task.completed"
+            (ionChange)="toggleTask(task.id)"
+            color="primary"
+            aria-label="Completar tarea"
+          >
+          </ion-checkbox>
+
+          <div class="task-content">
+            <ion-label class="task-title" [class.completed]="task.completed">
+              {{ task.title }}
+            </ion-label>
+            <div *ngIf="task.categoryId" class="task-category">
+              <ion-chip size="small" class="category-chip">
+                <ion-icon name="pricetag-outline"></ion-icon>
+                <ion-label>{{ getCategoryName(task.categoryId) }}</ion-label>
+              </ion-chip>
+            </div>
+          </div>
+
+          <ion-buttons slot="end">
+            <ion-button fill="clear" (click)="editTask(task)" class="action-btn" aria-label="Editar tarea">
+              <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" (click)="deleteTask(task.id)" class="action-btn delete-btn-icon" aria-label="Eliminar tarea">
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+
+        <ion-item-options side="end">
+          <ion-item-option color="primary" (click)="editTask(task)">
+            <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+          </ion-item-option>
+          <ion-item-option color="danger" (click)="deleteTask(task.id)">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
   </div>
+
 </ion-content>

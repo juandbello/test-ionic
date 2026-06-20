@@ -1,0 +1,231 @@
+# To-Do App - Ionic 8 + Angular 20
+
+## Descripción
+
+Aplicación móvil híbrida desarrollada con Ionic 8 y Angular 20 como parte de una prueba técnica para desarrollador mobile.
+
+La aplicación permite gestionar tareas mediante almacenamiento local, incluyendo la creación, edición, eliminación y categorización de tareas. Adicionalmente, implementa Firebase Remote Config para habilitar o deshabilitar funcionalidades mediante feature flags.
+
+## Funcionalidades
+
+* Crear tareas.
+* Editar tareas.
+* Eliminar tareas.
+* Marcar tareas como completadas.
+* Crear categorías.
+* Editar categorías.
+* Eliminar categorías.
+* Asignar categorías a las tareas.
+* Filtrar tareas por nombre.
+* Filtrar tareas por categoría.
+* Persistencia local mediante Ionic Storage.
+* Gestión de funcionalidades con Firebase Remote Config.
+* Compilación para Android e iOS mediante Capacitor.
+
+## Tecnologías utilizadas
+
+* Angular 20
+* Ionic 8
+* Capacitor 8
+* TypeScript
+* RxJS
+* Ionic Storage
+* Firebase Remote Config
+* Ionicons
+
+## Arquitectura del proyecto
+
+El proyecto utiliza componentes standalone de Angular y una arquitectura basada en servicios.
+
+```text
+src/app
+├── core
+│   ├── models
+│   │   ├── task.model.ts
+│   │   └── category.model.ts
+│   └── services
+│       ├── storage.service.ts
+│       ├── task.service.ts
+│       ├── category.service.ts
+│       └── remote-config.service.ts
+├── pages
+├── components
+├── app.component.ts
+├── app.routes.ts
+└── main.ts
+```
+
+## Requisitos previos
+
+* Node.js 22 LTS o superior
+* npm 9 o superior
+* Ionic CLI 7 o superior
+* Android Studio
+* Xcode (solo para compilación en iOS)
+* Cuenta de Firebase
+
+## Instalación
+
+Clonar el repositorio:
+
+```bash
+git clone <https://github.com/juandbello/test-ionic.git>
+```
+
+Ingresar al directorio del proyecto:
+
+```bash
+cd todo-app
+```
+
+Instalar las dependencias:
+
+```bash
+npm install
+```
+
+## Configuración del entorno
+
+Crear el archivo `src/environments/environment.ts` con la configuración de Firebase:
+
+```typescript
+export const environment = {
+  production: false,
+  firebase: {
+    apiKey: 'YOUR_API_KEY',
+    authDomain: 'YOUR_AUTH_DOMAIN',
+    projectId: 'YOUR_PROJECT_ID',
+    storageBucket: 'YOUR_STORAGE_BUCKET',
+    messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
+    appId: 'YOUR_APP_ID',
+    measurementId: 'YOUR_MEASUREMENT_ID'
+  }
+};
+```
+
+## Configuración de Firebase Remote Config
+
+1. Crear un proyecto en Firebase.
+2. Registrar una aplicación web.
+3. Acceder a Remote Config.
+4. Crear el siguiente parámetro:
+
+| Clave            | Valor |
+| ---------------- | ----- |
+| enableCategories | true  |
+
+5. Publicar los cambios.
+
+La aplicación utiliza este parámetro como feature flag para habilitar o deshabilitar la funcionalidad de categorías.
+
+## Ejecución en entorno local
+
+Iniciar la aplicación:
+
+```bash
+ionic serve
+```
+
+La aplicación estará disponible en:
+
+```text
+http://localhost:8100
+```
+
+## Compilación para Android
+
+Agregar la plataforma Android:
+
+```bash
+npx cap add android
+```
+
+Generar el build:
+
+```bash
+ionic build
+```
+
+Sincronizar los cambios:
+
+```bash
+npx cap sync android
+```
+
+Abrir el proyecto en Android Studio:
+
+```bash
+npx cap open android
+```
+
+Generar el archivo APK desde Android Studio.
+
+## Compilación para iOS
+
+Agregar la plataforma iOS:
+
+```bash
+npx cap add ios
+```
+
+Generar el build:
+
+```bash
+ionic build
+```
+
+Sincronizar los cambios:
+
+```bash
+npx cap sync ios
+```
+
+Abrir el proyecto en Xcode:
+
+```bash
+npx cap open ios
+```
+
+Generar el archivo IPA desde Xcode.
+
+## Optimizaciones implementadas
+
+* Uso de componentes standalone.
+* Gestión de estado mediante RxJS y BehaviorSubject.
+* Persistencia local con Ionic Storage.
+* Lazy loading de rutas.
+* Uso de `trackBy` para optimizar el renderizado de listas.
+* Feature flags mediante Firebase Remote Config.
+* Separación de responsabilidades mediante servicios.
+
+## Calidad y mantenibilidad
+
+* Código tipado con TypeScript.
+* Arquitectura modular y escalable.
+* Separación entre modelos, servicios y componentes.
+* Control de versiones con Git.
+* Estructura preparada para futuras integraciones.
+
+## Scripts disponibles
+
+```bash
+npm start
+npm run build
+npm run test
+npm run lint
+```
+
+## Respuestas a la prueba técnica
+
+### ¿Cuáles fueron los principales desafíos que enfrentaste al implementar las nuevas funcionalidades?
+
+La integración de Firebase Remote Config y la implementación de feature flags representaron el principal desafío, ya que fue necesario garantizar una configuración dinámica de la aplicación sin afectar la experiencia de usuario. Adicionalmente, la gestión del estado local y la sincronización con el almacenamiento persistente requirieron un diseño desacoplado y mantenible.
+
+### ¿Qué técnicas de optimización de rendimiento aplicaste y por qué?
+
+Se utilizaron componentes standalone para reducir la complejidad del proyecto, `trackBy` para optimizar el renderizado de listas, lazy loading para disminuir el tiempo de carga inicial y RxJS para gestionar el estado de forma eficiente y reactiva.
+
+### ¿Cómo aseguraste la calidad y mantenibilidad del código?
+
+Se implementó una arquitectura basada en servicios con una clara separación de responsabilidades. Los modelos se definieron mediante interfaces TypeScript y la lógica de negocio se centralizó en servicios reutilizables, facilitando la escalabilidad y el mantenimiento del proyecto.
+

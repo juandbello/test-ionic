@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Categorías</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()" aria-label="Cerrar">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Agregar categoría -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <div class="card-header-row">
+          <ion-icon name="folder-open-outline" aria-hidden="true"></ion-icon>
+          <span>Crear categoría</span>
+        </div>
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-input
+          placeholder="Nombre de la categoría"
+          [(ngModel)]="newCategoryName"
+          (keyup.enter)="addCategory()"
+        >
+        </ion-input>
+      </ion-item>
+      <ion-button
+        (click)="addCategory()"
+        expand="block"
+        class="ion-margin-top"
+        [disabled]="!newCategoryName.trim()"
+      >
+        <ion-icon slot="start" name="add-outline"></ion-icon>
+        Crear
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Lista categorias -->
+  <div class="section-header">
+    <ion-icon name="folder-outline" color="primary" aria-hidden="true"></ion-icon>
+    <h2>Mis categorías</h2>
+  </div>
+
+  <ion-list lines="none">
+    <ion-item *ngFor="let category of categories$ | async" class="category-item">
+      <ion-icon slot="start" name="folder-outline" color="tertiary"></ion-icon>
+      <ion-label>{{ category.name }}</ion-label>
+      <ion-buttons slot="end">
+        <ion-button fill="clear" (click)="editCategory(category)" aria-label="Editar categoría">
+          <ion-icon slot="icon-only" name="create-outline" color="primary"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" (click)="deleteCategory(category.id)" aria-label="Eliminar categoría">
+          <ion-icon slot="icon-only" name="trash-outline" color="danger"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+
+  <div *ngIf="(categories$ | async)?.length === 0" class="empty-state">
+    <ion-icon name="folder-open-outline" class="empty-icon"></ion-icon>
+    <p>No hay categorías creadas aún.</p>
+  </div>
+</ion-content>
